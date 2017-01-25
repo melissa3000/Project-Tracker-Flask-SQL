@@ -13,10 +13,13 @@ def get_student():
 
     github = request.args.get('github', 'jhacks')
     first, last, github = hackbright.get_student_by_github(github)
+    student_projects = hackbright.get_grades_by_github(github)
+
     html = render_template("student_info.html",
                             first=first,
                             last=last,
-                            github=github)
+                            github=github,
+                            student_projects=student_projects,)
     return html
 
 
@@ -47,6 +50,27 @@ def new_student():
                             first=first,
                             last=last,
                             github=github)
+
+
+
+@app.route("/project_info")
+def get_project_title():
+    """ get project title"""
+ 
+
+    return render_template("project_title_form.html")
+
+
+@app.route("/project")
+def display_project_info():
+    """ Displays project title, description and max grade"""
+    title=request.args.get('title')
+    
+    single_project = hackbright.get_project_by_title(title)
+    
+    return render_template("project_info.html",
+                            single_project=single_project,
+                            )
 
 
 if __name__ == "__main__":
